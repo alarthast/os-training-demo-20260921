@@ -181,3 +181,32 @@ Highlight the main steps using the project.yaml:
 - generate_measures
 
 ## Final Step: run `opensafely run run_all` in terminal
+
+## Note: Demonstrating the `show` command
+
+- The `show` command works on the complete dataset definition on the `main` branch.
+One can demonstrate the command by importing `show` and using it on e.g. `dataset`.
+
+- On `pipeline_2`, the `show` command would need to know which
+set of parameters and dummy tables to use in order to work.
+This is probably a bit too niche for the demo,
+but notes are included below in case it comes up as a question.
+
+- To use `show` in `pipeline_2` with (for example) the pre pandemic period,
+    - Pass the pre pandemic period as the default to `get_parameter` in the dataset
+    definition:
+
+    ```python
+    # define start of follow up period
+    index_date = datetime.strptime(study_dates[get_parameter(name="period",default=["pre_pandemic_start", "pre_pandemic_end"])[0]], "%Y-%m-%d").date()
+
+    # define end of follow up period
+    end_date = datetime.strptime(study_dates[get_parameter(name="period",default=["pre_pandemic_start", "pre_pandemic_end"])[1]], "%Y-%m-%d").date()
+    ```
+
+    - Configure the VSCode extension to use the pre pandemic set of dummy tables. To do this, [open the workspace settings](https://code.visualstudio.com/docs/configure/settings#_workspace-settings) and specify the dummy tables path:
+    ```json
+    {
+        "opensafely.DummyTablesDir": "dummy_tables/dummy_tables_pre_pandemic"
+    }
+    ```
